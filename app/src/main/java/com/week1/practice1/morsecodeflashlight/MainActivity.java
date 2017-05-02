@@ -27,14 +27,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean flash = true;
     public Camera camera = Camera.open();
     public Parameters p = camera.getParameters();
+    public boolean setText = true;
 
     protected void init(){
 
         SeekBarAction();
         ButtonAction();
-
-        TextView messsage = (TextView)findViewById(R.id.message);
-
         SendMessage();
 
 
@@ -96,17 +94,8 @@ public class MainActivity extends AppCompatActivity {
     }
     protected void SendMessage() {
         final EditText tv = (EditText)findViewById(R.id.message);
-        final int n = 0;
-        tv.setOnClickListener(new EditText.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                if (n == 0) {
-                    tv.setText("");
-                }
-            }
-        });
-
+        // Input filter
         InputFilter filter = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end,
                                        Spanned dest, int dstart, int dend) {
@@ -124,6 +113,19 @@ public class MainActivity extends AppCompatActivity {
 
         tv.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         tv.setFilters(new InputFilter[] {filter,new InputFilter.LengthFilter(10)});
+
+
+        tv.setOnClickListener(new EditText.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (setText) {
+                    tv.setText("");
+                    setText = false;
+                }
+            }
+        });
+
     }
 
 
@@ -155,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         EditText ET = (EditText)findViewById(R.id.message);
 
         final String[] converted = {ConvertToMorse(ET.getText().toString())};
-        int i = 0;
 
         final Timer timer = new Timer();
         TimerTask task = new TimerTask() {
